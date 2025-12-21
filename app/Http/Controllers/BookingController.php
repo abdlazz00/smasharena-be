@@ -139,15 +139,27 @@ class BookingController extends Controller
         ], 201);
     }
 
-    // 3. LIHAT DETAIL BOOKING (E-TICKET)
-    public function show($code)
+    // 3. LIHAT DETAIL BOOKING (E-TICKET & ADMIN PRINT)
+    public function show($id)
     {
-        // Cari berdasarkan booking_code, sertakan data lapangan
-        $booking = Booking::with('court')->where('booking_code', $code)->first();
+        // Logic baru: Bisa cari pakai ID (Admin) atau Booking Code (Guest)
+        $booking = Booking::with([
+            'court',
+            'user',
+            'transaction.processedBy',      // Penting: Untuk info Kasir & Metode Bayar
+            'posOrders.orderItems.product'  // Penting: Untuk rincian jajanan di struk
+        ])
+            ->where('id', $id)
+            ->orWhere('booking_code', $id)
+            ->first();
 
         if (!$booking) {
             return response()->json(['message' => 'Booking tidak ditemukan'], 404);
         }
+
+        // Trik kecil: Frontend Print Struk memanggil 'orders',
+        // tapi relasi di model namanya 'posOrders'. Kita alias-kan biar tidak error.
+        $booking->orders = $booking->posOrders;
 
         return response()->json($booking);
     }

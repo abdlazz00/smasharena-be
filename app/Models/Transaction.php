@@ -44,7 +44,7 @@ class Transaction extends Model
     }
 
     // Relasi ke Admin yang memproses
-    public function processor()
+    public function processedBy()
     {
         return $this->belongsTo(User::class, 'processed_by');
     }

@@ -17,7 +17,7 @@ class OrderController extends Controller
     // 1. LIST TRANSAKSI
     public function index()
     {
-        $orders = Order::with(['user', 'booking', 'cashSession.user'])
+        $orders = Order::with(['user', 'booking', 'cashSession.user', 'orderItems.product'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         return response()->json($orders);
@@ -59,7 +59,7 @@ class OrderController extends Controller
             // 2. Buat Header Order
             $order = Order::create([
                 'invoice_code' => $invoiceCode,
-                'user_id' => null, // Bisa dikembangin nanti kalau member beli
+                'user_id' => null,
                 'booking_id' => $request->booking_id,
                 'cash_session_id' => $session->id,
                 'total_amount' => 0, // Update nanti setelah loop

@@ -88,6 +88,7 @@ Route::middleware(['auth:sanctum', 'is_admin'])->group(function () {
     Route::delete('/courts/{id}', [CourtController::class, 'destroy']);
     // 2. LIHAT SEMUA BOOKING (Untuk Admin Dashboard)
     Route::get('/admin/bookings', [BookingController::class, 'index']);
+    Route::get('/admin/bookings/{id}', [BookingController::class, 'show']);
     Route::post('/admin/bookings/{id}/settle', [BookingController::class, 'settlePayment']); // (BARU: Pelunasan)
     // 3. PROSES PEMBAYARAN (Booking ID)
     Route::post('/admin/bookings/{id}/pay', [TransactionController::class, 'store']);

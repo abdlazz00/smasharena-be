@@ -22,13 +22,27 @@ class CashSessionController extends Controller
             return response()->json(['status' => 'closed', 'message' => 'Anda belum membuka kasir.']);
         }
 
-        return response()->json(['status' => 'open', 'data' => $session]);
+        // --- UPDATE: Hitung Omzet Cash Secara Real-time ---
+        // Kita hitung jumlah order yang 'paid' dan metodenya 'cash' pada sesi ini
+        $currentCashSales = $session->orders()
+            ->where('payment_method', 'cash')
+            ->where('payment_status', 'paid')
+            ->sum('total_amount');
+
+        // Kembalikan format 'session' agar sesuai dengan Frontend
+        return response()->json([
+            'status' => 'open',
+            'session' => [
+                'id' => $session->id,
+                'starting_cash' => $session->starting_cash,
+                'total_cash_sales' => $currentCashSales
+            ]
+        ]);
     }
 
     // 2. BUKA KASIR (OPEN SHIFT)
     public function open(Request $request)
     {
-        // Cek dulu jangan sampai double open
         $existing = CashSession::where('user_id', Auth::id())->where('status', 'open')->first();
         if ($existing) {
             return response()->json(['message' => 'Anda sudah memiliki sesi aktif!'], 400);
