@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => [
         'http://localhost:3000',
-        'https://smasharena-fe-production.up.railway.app',
+        'https://smasharena.up.railway.app',
     ],
 
     'allowed_origins_patterns' => [],
