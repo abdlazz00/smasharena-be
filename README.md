@@ -1,59 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Smash Arena Backend (API)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-## About Laravel
+**Smash Arena Backend** adalah layanan REST API yang dibangun menggunakan Laravel untuk mengelola operasional venue olahraga (Badminton/Futsal). Sistem ini mencakup manajemen booking lapangan, sistem Point of Sales (POS) untuk kantin/toko, serta notifikasi otomatis via WhatsApp.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Autentikasi & Pengguna
+* **Role-based Access Control:** Membedakan akses antara `admin` dan `customer`.
+* **Social Login:** Integrasi login menggunakan Google (via Laravel Socialite).
+* **Sanctum Auth:** Keamanan token API untuk aplikasi mobile/frontend.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Manajemen Booking (Lapangan)
+* **Cek Ketersediaan:** Endpoint publik untuk melihat slot waktu yang kosong.
+* **Booking System:** Customer dapat melakukan booking lapangan secara mandiri.
+* **Pembatalan:** Fitur pembatalan booking oleh customer.
+* **Manajemen Admin:** Admin dapat melihat, mengubah, dan menyelesaikan status booking (Check-in/Selesai).
 
-## Learning Laravel
+### 3. Point of Sales (POS) & Inventory
+* **Manajemen Produk:** CRUD Master barang/produk yang dijual di venue.
+* **Purchasing (Kulakan):** Manajemen stok masuk (restock) barang.
+* **Shift Kasir:** Sistem Buka/Tutup kasir (`CashSession`) untuk memantau arus uang per shift.
+* **Transaksi:** Pencatatan penjualan barang (F&B atau perlengkapan).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 4. Notifikasi & Integrasi
+* **WhatsApp Gateway:** Integrasi dengan **Fonnte** untuk mengirim notifikasi status booking secara otomatis.
+* **Laporan:** Dashboard statistik untuk Admin.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Persyaratan Sistem
 
-## Laravel Sponsors
+* PHP ^8.2
+* Composer
+* MySQL Database
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 📦 Instalasi
 
-### Premium Partners
+Ikuti langkah-langkah berikut untuk menjalankan project di lokal:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1.  **Clone Repositori**
+    ```bash
+    git clone [https://github.com/username/smasharena-be.git](https://github.com/username/smasharena-be.git)
+    cd smasharena-be
+    ```
 
-## Contributing
+2.  **Install Dependencies**
+    ```bash
+    composer install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3.  **Konfigurasi Environment**
+    Salin file `.env.example` menjadi `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+    Sesuaikan konfigurasi database dan API key di file `.env`:
+    ```ini
+    DB_DATABASE=smash_arena_be
+    DB_USERNAME=root
+    DB_PASSWORD=
 
-## Code of Conduct
+    # Konfigurasi Fonnte (WA Gateway)
+    FONNTE_TOKEN=your_fonnte_token_here
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    # Konfigurasi Google Login (Opsional)
+    GOOGLE_CLIENT_ID=
+    GOOGLE_CLIENT_SECRET=
+    ```
 
-## Security Vulnerabilities
+4.  **Generate Application Key**
+    ```bash
+    php artisan key:generate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5.  **Migrasi Database & Seeding**
+    Jalankan migrasi untuk membuat tabel dan data awal (termasuk akun admin default):
+    ```bash
+    php artisan migrate --seed
+    ```
 
-## License
+6.  **Jalankan Server**
+    ```bash
+    php artisan serve
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🔑 Akun Default (Admin)
+
+Setelah menjalankan `php artisan migrate --seed`, akun admin berikut akan dibuat secara otomatis:
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@smash.id` | `123` |
+
+## 📚 Dokumentasi API (Ringkasan)
+
+Berikut adalah beberapa endpoint utama yang tersedia di `routes/api.php`:
+
+| Method | Endpoint | Deskripsi | Auth |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/api/auth/login` | Login user & admin | ❌ |
+| **POST** | `/api/auth/register` | Registrasi customer baru | ❌ |
+| **GET** | `/api/slots` | Cek slot lapangan tersedia | ❌ |
+| **GET** | `/api/courts` | List semua lapangan | ❌ |
+| **POST** | `/api/bookings` | Membuat booking baru | ❌ |
+| **GET** | `/api/my-bookings` | History booking user login | ✅ |
+| **POST** | `/api/admin/orders` | Transaksi POS (Kasir) | ✅ (Admin) |
+| **POST** | `/api/admin/cash-session/open` | Buka shift kasir | ✅ (Admin) |
+
+## 📝 Lisensi
+
+Project ini dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).
